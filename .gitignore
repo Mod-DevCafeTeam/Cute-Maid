@@ -3,3 +3,5 @@ drpc4k.iml
 .idea/
 build/
 .gradle/
+settings.json
+*.iml

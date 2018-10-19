@@ -51,3 +51,8 @@ allprojects {
 
     kotlin.experimental.coroutines = Coroutines.ENABLE
 }
+
+dependencies {
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
+    compile(project(":database"))
+}
