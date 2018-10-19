@@ -24,8 +24,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException
 import kotlin.system.exitProcess
 
+internal val logger = KotlinLogging.logger {  }
+
 object DBManager {
-    internal val logger = KotlinLogging.logger {  }
     lateinit var settings : DatabaseSettings
 
     data class DatabaseSettings(
