@@ -41,6 +41,9 @@ allprojects {
         implementation("org.slf4j:slf4j-api:$slf4j_version")
         implementation("io.github.microutils:kotlin-logging:1.6.10")
         runtimeOnly("org.slf4j:slf4j-simple:$slf4j_version")
+
+        if (this@allprojects.name != "common") implementation(project(":common"))
+        else implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
     }
 
     val sourceJar by tasks.registering(Jar::class) {
@@ -53,6 +56,5 @@ allprojects {
 }
 
 dependencies {
-    compile("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
-    compile(project(":database"))
+    implementation(project(":database"))
 }

@@ -18,6 +18,9 @@
 package be.bluexin.cutemaid
 
 import be.bluexin.cutemaid.database.DBManager
+import mu.KotlinLogging
+
+val logger = KotlinLogging.logger {  }
 
 fun main(args: Array<String>) {
     SettingsManager.settings

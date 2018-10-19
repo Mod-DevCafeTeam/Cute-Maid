@@ -18,36 +18,27 @@
 package be.bluexin.cutemaid
 
 import be.bluexin.cutemaid.database.DBManager
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
 import kotlin.system.exitProcess
 
 object SettingsManager {
 
-    val jacksonMapper = ObjectMapper()
-            .registerKotlinModule()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .enable(SerializationFeature.INDENT_OUTPUT)!!
 
     val settings by lazy {
         val settingsFile = File("settings.json")
         if (!settingsFile.exists()) {
-            jacksonMapper.writerWithDefaultPrettyPrinter().writeValue(settingsFile, Settings())
-            println("Default config file was generated. Please edit with the correct info.")
+            Settings().writeJson(settingsFile)
+            logger.warn("Default config file was generated. Please edit with the correct info.")
             exitProcess(0)
         } else {
             try {
-                jacksonMapper.readValue<Settings>(settingsFile).also {
-                    // To make sure we get updated configexit
-                    jacksonMapper.writerWithDefaultPrettyPrinter().writeValue(settingsFile, it)
-                    DBManager.settings = it.database
+                readJson<Settings>(settingsFile).also {
+                    // To make sure we get updated config
+                    it.writeJson(settingsFile)
+                    it.apply()
                 }
             } catch (e: Exception) {
-                println("Config file couldn't be parsed. Please consider deleting it to regenerate it.")
+                logger.error("Config file couldn't be parsed. Please consider deleting it to regenerate it.")
                 exitProcess(1)
             }
         }
@@ -55,5 +46,9 @@ object SettingsManager {
 
     data class Settings(
             val database: DBManager.DatabaseSettings = DBManager.DatabaseSettings()
-    )
+    ) {
+        fun apply() {
+            DBManager.settings = this.database
+        }
+    }
 }

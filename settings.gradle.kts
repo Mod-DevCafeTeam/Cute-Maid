@@ -1,4 +1,5 @@
 include(
+        "common",
         "database",
         "discord",
         "website"
