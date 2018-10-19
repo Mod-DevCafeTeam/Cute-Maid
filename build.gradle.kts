@@ -48,5 +48,6 @@ allprojects {
         from(sourceSets["test"].allSource)
         classifier = "sources"
     }
+
+    kotlin.experimental.coroutines = Coroutines.ENABLE
 }
-kotlin.experimental.coroutines = Coroutines.ENABLE
