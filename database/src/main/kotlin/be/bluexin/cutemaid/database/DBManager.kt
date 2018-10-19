@@ -42,7 +42,7 @@ object DBManager {
             logger.info("Connected using ${db.vendor} database on version ${db.version}")
             transaction {
                 SchemaUtils.createMissingTablesAndColumns(
-
+                    DiscordUserTable
                 )
             }
         } catch (e: SQLException) {
