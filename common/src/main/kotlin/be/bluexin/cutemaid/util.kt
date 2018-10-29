@@ -45,8 +45,8 @@ fun String.escapeHTML(): String {
     if (this.isEmpty()) return this
 
     return buildString(length) {
-        for (idx in 0 until this.length) {
-            val ch = this[idx]
+        for (idx in 0 until this@escapeHTML.length) {
+            val ch = this@escapeHTML[idx]
             when (ch) {
                 '\"' -> append("&quot")
                 '&' -> append("&amp;")
