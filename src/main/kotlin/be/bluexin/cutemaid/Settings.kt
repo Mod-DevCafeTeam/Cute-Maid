@@ -18,6 +18,7 @@
 package be.bluexin.cutemaid
 
 import be.bluexin.cutemaid.database.DBManager
+import be.bluexin.cutemaid.website.WebServer
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -45,10 +46,12 @@ object SettingsManager {
     }
 
     data class Settings(
-            val database: DBManager.DatabaseSettings = DBManager.DatabaseSettings()
+            val database: DBManager.DatabaseSettings = DBManager.DatabaseSettings(),
+            val webserver: WebServer.WebSettings = WebServer.WebSettings()
     ) {
         fun apply() {
             DBManager.settings = this.database
+            WebServer.settings = this.webserver
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018.  Arnaud 'Bluexin' Solé
+ * Copyright (C) 2018  Arnaud 'Bluexin' Solé
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package be.bluexin.cutemaid
+package be.bluexin.cutemaid.website
 
-import be.bluexin.cutemaid.database.DBManager
-import be.bluexin.cutemaid.website.WebServer
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
-import mu.KotlinLogging
+import be.bluexin.cutemaid.database.User
+import org.jetbrains.exposed.sql.transactions.transaction
 
-val logger = KotlinLogging.logger("Cutemaid Main")
-
-fun main(args: Array<String>) {
-    SettingsManager.settings
-    WebServer.init()
-    DBManager.init()
-
-    runBlocking {
-        launch {
-            WebServer.startWebserver()
-        }
-    }
+data class UserSession(val id: Long) {
+    fun getUser() = transaction { User.findById(id) }
 }

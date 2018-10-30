@@ -43,6 +43,7 @@ class DBDiscordUser(id: EntityID<String>) : Entity<String>(id) {
     var email by DiscordUserTable.email
     var token by DiscordUserTable.token
     var refreshtoken by DiscordUserTable.refreshToken
+    var locale by DiscordUserTable.locale
 
     val handle get() = "$username#$discriminator"
 }
@@ -57,4 +58,5 @@ object DiscordUserTable : IdTable<String>("") {
     val email by varcharNullable(255)
     val token by varchar(255)
     val refreshToken by varchar(255)
+    val locale by varcharNullable(10)
 }

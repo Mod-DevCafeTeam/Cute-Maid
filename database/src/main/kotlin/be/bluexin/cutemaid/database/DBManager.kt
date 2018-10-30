@@ -20,11 +20,12 @@ package be.bluexin.cutemaid.database
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException
 import kotlin.system.exitProcess
 
-internal val logger = KotlinLogging.logger {  }
+internal val logger = KotlinLogging.logger("Cutemaid Database")
 
 object DBManager {
     lateinit var settings : DatabaseSettings
@@ -41,13 +42,15 @@ object DBManager {
         try {
             logger.info("Connected using ${db.vendor} database on version ${db.version}")
             transaction {
-                SchemaUtils.createMissingTablesAndColumns(
-                    DiscordUserTable
-                )
+                SchemaUtils.createMissingTablesAndColumns(*tables.toTypedArray())
             }
         } catch (e: SQLException) {
             logger.error("Couldn't connect to database.", e)
             exitProcess(1)
         }
     }
+
+    val tables = mutableListOf<Table>(
+            DiscordUserTable
+    )
 }
