@@ -1,12 +1,9 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 
 /*plugins {
     id("com.moowork.node") version "1.2.0"
 }*/
-
-repositories {
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlinx/") }
-}
 
 dependencies {
     val ktor_version by extra.properties
@@ -21,14 +18,15 @@ dependencies {
             "client-json",
             "client-jackson"
     ).forEach {
-        implementation("io.ktor:ktor-$it:$ktor_version") {
-            //            exclude(module = "kotlin-stdlib-jdk8")
-        }
+        implementation("io.ktor:ktor-$it:$ktor_version")
     }
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
     implementation(project(":database"))
 }
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
 
 /*val copyFrontend by tasks.registering(Copy::class) {
     into ("$buildDir/resources/main")

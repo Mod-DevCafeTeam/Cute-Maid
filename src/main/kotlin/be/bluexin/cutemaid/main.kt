@@ -19,8 +19,8 @@ package be.bluexin.cutemaid
 
 import be.bluexin.cutemaid.database.DBManager
 import be.bluexin.cutemaid.website.WebServer
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 
 val logger = KotlinLogging.logger("Cutemaid Main")

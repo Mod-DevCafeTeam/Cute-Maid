@@ -22,6 +22,10 @@ allprojects {
     repositories {
         jcenter()
         maven {
+            name = "KotlinX repo (Serialization transitive dep)"
+            url = uri("https://kotlin.bintray.com/kotlinx/")
+        }
+        maven {
             name = "Ktor bintray"
             url = uri("https://kotlin.bintray.com/ktor")
         }
@@ -48,7 +52,10 @@ allprojects {
             runtimeOnly("ch.qos.logback:logback-classic:${prop("logback_version")}")
 
             if (this@allprojects.name != "common") implementation(project(":common"))
-            else implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
+            else {
+                implementation(kotlin("reflect")) // Explicit otherwise jackson pulls in wrong one
+                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${prop("jackson_version")}")
+            }
         }
 
         val sourceJar by tasks.registering(Jar::class) {
@@ -57,7 +64,6 @@ allprojects {
             classifier = "sources"
         }
 
-        kotlin.experimental.coroutines = Coroutines.ENABLE
     }
 }
 

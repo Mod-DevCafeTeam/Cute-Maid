@@ -3,7 +3,7 @@ package be.bluexin.cutemaid.website
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
-import io.ktor.pipeline.PipelineContext
+import io.ktor.util.pipeline.PipelineContext
 import io.ktor.response.respond
 import io.ktor.sessions.get
 import io.ktor.sessions.sessions

@@ -49,6 +49,7 @@ object WebServer {
         DBManager.tables += SessionStorageDatabase.UserSessionsTable
     }
 
+    @UseExperimental(KtorExperimentalLocationsAPI::class)
     fun startWebserver() {
         embeddedServer(
                 Netty,
@@ -69,11 +70,12 @@ private val discordLogin = OAuthServerSettings.OAuth2ServerSettings(
         defaultScopes = listOf("identify", "email")
 )
 
+@KtorExperimentalLocationsAPI
 private fun Application.installs() {
     install(DefaultHeaders)
     install(CallLogging)
     install(Locations)
-    install(Compression)
+//    install(Compression) // TODO: Uncomment once ktorio/ktor#685 is fixed
     install(AutoHeadResponse)
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(Index::class.java.classLoader, "templates")
@@ -109,6 +111,7 @@ private fun Application.installs() {
     }
 }
 
+@KtorExperimentalLocationsAPI
 fun Application.main() {
     installs()
 
@@ -133,6 +136,7 @@ fun Application.main() {
     }
 }
 
+@KtorExperimentalLocationsAPI
 private fun Routing.installLogin() {
     location<Login> {
         authenticate {
@@ -185,6 +189,7 @@ private fun Routing.installLogin() {
     }
 }
 
+@KtorExperimentalLocationsAPI
 private fun <T : Any> ApplicationCall.redirectUrl(t: T, secure: Boolean = true): String {
     val hostPort = request.host()!! + request.port().let { port -> if (port == 80) "" else ":$port" }
     val protocol = when {

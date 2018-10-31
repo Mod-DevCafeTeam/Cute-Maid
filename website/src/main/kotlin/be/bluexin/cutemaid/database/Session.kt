@@ -19,10 +19,11 @@ package be.bluexin.cutemaid.database
 
 import io.ktor.sessions.SessionStorage
 import io.ktor.util.cio.toByteArray
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.io.ByteReadChannel
-import kotlinx.coroutines.experimental.io.ByteWriteChannel
-import kotlinx.coroutines.experimental.io.writer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.io.ByteReadChannel
+import kotlinx.coroutines.io.ByteWriteChannel
+import kotlinx.coroutines.io.writer
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -46,13 +47,15 @@ class SessionStorageDatabase : SessionStorage {
     }
 
     override suspend fun write(id: String, provider: suspend (ByteWriteChannel) -> Unit) {
-        val data = String(writer(Dispatchers.Unconfined, autoFlush = true) {
-            provider(channel)
-        }.channel.toByteArray())
-        transaction {
-            UserSession.createOrUpdate(id) {
-                this.data = data
-                this.lastAccess = DateTime.now()
+        coroutineScope {
+            val data = String(writer(Dispatchers.IO, autoFlush = true) {
+                provider(channel)
+            }.channel.toByteArray())
+            transaction {
+                UserSession.createOrUpdate(id) {
+                    this.data = data
+                    this.lastAccess = DateTime.now()
+                }
             }
         }
     }

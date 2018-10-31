@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@file:UseExperimental(KtorExperimentalLocationsAPI::class)
 
 package be.bluexin.cutemaid.website
 
 import io.ktor.application.call
 import io.ktor.freemarker.FreeMarkerContent
 import io.ktor.http.HttpStatusCode
+import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.get
 import io.ktor.locations.post
 import io.ktor.request.receive
