@@ -23,9 +23,7 @@ import java.io.File
 import kotlin.system.exitProcess
 
 object SettingsManager {
-
-
-    val settings by lazy {
+    internal val settings by lazy {
         val settingsFile = File("settings.json")
         if (!settingsFile.exists()) {
             Settings().writeJson(settingsFile)
@@ -45,7 +43,7 @@ object SettingsManager {
         }
     }
 
-    data class Settings(
+    internal data class Settings(
             val database: DBManager.DatabaseSettings = DBManager.DatabaseSettings(),
             val webserver: WebServer.WebSettings = WebServer.WebSettings()
     ) {
